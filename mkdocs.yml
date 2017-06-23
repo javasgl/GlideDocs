@@ -1,0 +1,8 @@
+site_name: Glide Docs
+
+theme: readthedocs
+
+
+pages:
+  - Home: index.md
+  - Geting Started: get_started.md
