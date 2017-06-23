@@ -1,8 +1,14 @@
 site_name: Glide Docs
+site_description: Glide 中文手册
+site_author: javasgl
 
 theme: readthedocs
 
+site_url: http://glidedocs.readthedocs.io/
+repo_url: https://github.com/javasgl/GlideDocs
+repo_name: Github
 
 pages:
   - Home: index.md
   - Geting Started: get_started.md
+
