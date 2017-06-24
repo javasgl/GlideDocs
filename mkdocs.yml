@@ -1,14 +1,13 @@
-site_name: Glide Docs
-site_description: Glide 中文手册
-site_author: javasgl
-
-theme: readthedocs
-
-site_url: http://glidedocs.readthedocs.io/
-repo_url: https://github.com/javasgl/GlideDocs
-repo_name: Github
-
+site_name: Glide 文档
 pages:
-  - Home: index.md
-  - Geting Started: get_started.md
-
+- 首页: index.md
+- 入门指南: getting-started.md
+- 配置文件(glide.yaml): glide.yaml.md
+- 版本和范围: versions.md
+- 锁文件(Lock file): glide.lock.md
+- 命令: commands.md
+- 导入解析: resolving-imports.md
+- Vendor 目录: vendor.md
+- 插件: plugins.md
+- 常见问题: faq.md
+theme: readthedocs
