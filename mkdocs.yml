@@ -1,4 +1,7 @@
 site_name: Glide 文档
+site_description: Glide--Golang包管理工具--中文文档
+site_author: javasgl
+repo_url: https://github.com/javasgl/GlideDocs
 pages:
 - 首页: index.md
 - 入门指南: getting-started.md
