@@ -1,37 +1,37 @@
-# Resolving Imports
+# 导入解析
 
-Glide scans an applications codebase to discover the projects to manage in the `vendor/` directory. This happens in a few different ways. Knowing how this works can help you understand what Glide is doing.
+Glide 扫描应用程序代码库以发现在`vendor/`目录中管理的项目。这以几种不同的方式发生。知道如何运作可以帮助您了解Glide正在做什么
 
-## At Initialization
+## 初始化时
 
-When you run `glide create` or `glide init` to create a `glide.yaml` file for a codebase Glide will scan your codebase to identify the imports. It does this by walking the filesystem to identify packages. In each package it reads the imports within the Go files.
+当你为代码库运行`glide create`或者`glide init`来穿件一个`glide.yaml`时，Glide 将会扫描代码库来识别导入。它通过文件来识别包。在每个包中，它读取Go文件中的导入。
 
-From this it will attempt to figure out the external packages. External packages are grouped by the root version control system repo with their sub-packages listed underneath. Figuring out the root version control repo compared with the packages underneath it follows the same rules for the `go` tool.
+从这里，它将尝试找出外部包。外部包按根版本控制系统仓库与其下列列出的子包来分组。遵循与 go 工具一样的规则来找出根版本控制仓库与其下的包相比。
 
-1. GitHub, Bitbucket, Launchpad, IBM Jazz, and go.googlesource.com are evaluated with special rules. We know or can talk to an API to learn about these repos.
-2. If the package associated with the repo ends in `.git`, `.hg`, `.bzr`, or `.svn` this is used to determine the root and the type of version control system.
-3. If the rules don't provide an answer a `go get` request occurs to try and lookup the information.
+1. GitHub, Bitbucket, Launchpad, IBM Jazz 和 go.googlesource.com 会用特殊规则解析。 我们可以知道或可以调用API来了解这些包。
+2. 如果与仓库相关联的包以.git，.hg，.bzr或.svn结尾，则可以用于确定版本控制系统的根和类型。
+3. 如果规则无法解析，则会尝试通过`go get`来查找信息。
 
-Again, this is the same way `go` tries to determine an external location when you use `go get`.
+再次，和使用`go get`确定外部包位置时的方式是一样的。
 
-If the project has dependency configuration stored in a Godep, GPM, Gom, or GB file that information will be used to populate the version within the `glide.yaml` file.
+如果项目具有存储在Godep，GPM，Gom或GB文件中的依赖包配置，则该信息将用于填充`glide.yaml`文件中的版本
 
-## At Update
+## 更新时
 
-When `glide update`, `glide up`, `glide get`, or `glide install` (when no `glide.lock` is present) Glide will attempt to discover the complete dependency tree. That is all dependencies including dependencies of dependencies of dependencies.
+当运行`glide update`，`glide up`，`glide get` 或者 `glide install` (没有`glide.lock`时)，Glide 会尝试检测完整的依赖树。那是所有的依赖关系，包含了依赖的依赖。
 
-### The Default Option
+### 默认选项
 
-The default method is to walk the referenced import tree. The resolver starts by scanning the local application to get a list of imports. Then it looks at the specific package imports, scans the imported package for imports, and repeats the lookup cycle until the complete tree has been fetched.
+默认方式是遍历导入引用树。解析器首先扫描本地应用程序以获取导入列表。然后，它查看特定的包导入，扫描导入的包进行导入，并不断查找，直到获取完整的树。
 
-That means that only imports referenced in the source are fetched.
+这意味者仅源码中引用的导入才会获取。
 
-When a version control repo is fetched it does fetch the complete repo. But, it doesn't scan all the packages in the repo for dependencies. Instead, only the packages referenced in the tree are scanned with the imports being followed.
+当获取版本控制仓库时，它将获取完整的仓库。但是，它不扫描仓库中的所有包来获取依赖关系。相反，只有被扫描时在树中引用的包才会继续导入。
 
-Along the way configuration stored in Glide, Godep, GPM, Gom, and GB files are used to work out the version to set and fetched repos to. The first version found while walking the import tree wins.
+按照 Glide, Godep, GPM, Gom 和 GB 配置方式来确定版本和要获取的仓库。先进入引导树的版本优先。
 
-### All Possible Dependencies
+### 所有可能的依赖
 
-Using the `--all-dependencies` flag on `glide update` will change the behavior of the scan. Instead of walking the import tree it walks the filesystem and fetches all possible packages referenced everywhere. This downloads all packages in the tree. Even those not referenced in an applications source or in support of the applications imports.
+在`glide update`使用`--all-dependencies`将会改变扫描的行为。它会去文件系统中获取所有可能的引用的包，而不是遍历导入树。这将下载树中的所有包。即使那些在程序代码中或代码导入的包并未引用到的。
 
-As in other cases, Glide, Godep, GPM, Gom, and GB files are used to set the version of the fetched repo.
+与其他情况一样，Glide，Godep，GPM，Gom 和 GB 文件用于设置所获取仓库的版本。
