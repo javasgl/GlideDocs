@@ -1,71 +1,71 @@
-# Glide Plugins
+# Glide 插件
 
-Glide supports a simple plugin system similar to Git.
+Glide 支持一个类似于Git的简单的插件系统。
 
 ## Existing Plugins
+## 已有的插件
 
-Some plugins exist today for Glide including:
+Glide 已经包含一些插件：
 
-* [glide-vc](https://github.com/sgotti/glide-vc) - The vendor cleaner allows you to strip files not needed for building your application from the `vendor/` directory.
-* [glide-brew](https://github.com/heewa/glide-brew) - Convert Go deps managed by glide to Homebrew resources to help you make brew formulas for you Go programs.
-* [glide-hash](https://github.com/mattfarina/glide-hash) - Generates a hash of the `glide.yaml` file compatible with Glides internal hash.
-* [glide-cleanup](https://github.com/ngdinhtoan/glide-cleanup) - Removing unused packages from the `glide.yaml` file.
-* [glide-pin](https://github.com/multiplay/glide-pin) - Take all dependencies from the `glide.lock` and pin them explicitly in the `glide.yaml` file.
+* [glide-vc](https://github.com/sgotti/glide-vc) - 构建应用时允许你跳过`vendor/`目录中你不需要的文件。
+* [glide-brew](https://github.com/heewa/glide-brew) - 帮助你转换通过Go deps管理的项目到`Homebrew`，便于为你的 Go 程序构建 brew 版本。
+* [glide-hash](https://github.com/mattfarina/glide-hash) - 生成与Glides内部哈希兼容的`glide.yaml`文件的哈希值。
+* [glide-cleanup](https://github.com/ngdinhtoan/glide-cleanup) - 从`glide.yaml` 文件中移除没有使用的包。
+* [glide-pin](https://github.com/multiplay/glide-pin) - 从`glide.lock`文件中取出所有的依赖包，并把它们和`glide.yaml`中正确的对应起来。
 
-_Note, to add plugins to this list please create a pull request._
+_注意，往这个列表添加插件请提交一个`pull request`。_
 
-## How Plugins Work
+## 插件如何工作
 
-When Glide encounters a subcommand that it does not know, it will try to delegate it to another executable according to the following rules.
+当 Glide 遇到一个未知的子命令时，会根据以下规则尝试将其委​​托给另一个可执行文件。
 
-Example:
+例子：
 
 ```
-$ glide install # We know this command, so we execute it
-$ glide foo     # We don't know this command, so we look for a suitable
-                # plugin.
+$ glide install # 已知的命令，所以直接执行它 
+$ glide foo     # 未知的命令，所以会寻找一个合适的插件
 ```
 
 In the example above, when glide receives the command `foo`, which it does not know, it will do the following:
+上面的例子中，当 glide 接收到不认识的命令`foo`，它将执行以下操作：
 
-1. Transform the name from `foo` to `glide-foo`
-2. Look on the system `$PATH` for `glide-foo`. If it finds a program by that name, execute it...
-3. Or else, look at the current project's root for `glide-foo`. (That is, look in the same directory as `glide.yaml`). If found, execute it.
-4. If no suitable command is found, exit with an error.
+1. 将`foo`变为`glide-foo`
+2. 在系统的`$PATH`中寻找`glide-foo`，如果找到则执行它。
+3. 否则在当前项目的根目录下寻找`glide-foo`。(也就是说，在与`glide.yaml`相同的目录中)。如果找到则执行它。
+4. 如果没有找到适当的命令，则错误退出。
 
-## Writing a Glide Plugin
+## 编写 Glide 插件
 
-A Glide plugin can be written in any language you wish, provided that it can be executed from the command line as a subprocess of Glide. The example included with Glide is a simple Bash script. We could just as easily write Go, Python, Perl, or even Java code (with a wrapper) to
-execute.
+Glide 插件可以用任何你想要的语言编写，只要它可以作为Glide的子进程从命令行执行。Glide包含的示例是一个简单的Bash脚本。我们可以很容易地用 Go，Python，Perl，甚至是Java（带包装器）来编写。
 
-A Glide plugin must be in one of two locations:
+Glide插件必须位于两个位置之一：
 
-1. Somewhere on the PATH
-2. In the same directory as `glide.yaml`
+1. `PATH`路径中
+2. 和`glide.yaml`相同的目录 
 
-It is recommended that system-wide Glide plugins go in `/usr/local/bin` or `$GOPATH/bin` while project-specific plugins go in the same directory as `glide.yaml`.
+建议系统级别的插件放在`/usr/local/bin`或者`$GOPATH/bin`中，而项目特定的插件放在和`glide.yaml`所在的目录里。
 
-### Arguments and Flags
+### 参数和标志
 
-Say Glide is executed like this:
+说 Glide 是这样执行的：
 
 ```
 $ glide foo -name=Matt myfile.txt
 ```
 
-Glide will interpret this as a request to execute `glide-foo` with the arguments `-name=Matt myfile.txt`. It will not attempt to interpret those arguments or modify them in any way.
+Glide会将此解释为使用`-name = Matt myfile.txt`参数来执行`glide-foo`的请求。它不会试图解析这些参数或以任何方式修改它们
 
-Hypothetically, if Glide had a `-x` flag of its own, you could call this:
+假设，如果 Glide 有自己的`-x`标志，你可以这样调用：
 
 ```
 $ glide -x foo -name=Matt myfile.txt
 ```
 
-In this case, glide would interpret and swollow the -x and pass the rest on to `glide-foo` as in the example above.
+这种情况下，glide 将会解释并私吞`-x`，并将其余部分传递给`glide-foo`，如上例所示。
 
-## Example Plugin
+## 插件例子
 
-File: glide-foo
+文件： glide-foo
 
 ```bash
 #!/bin/bash
