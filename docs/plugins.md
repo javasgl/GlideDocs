@@ -2,7 +2,6 @@
 
 Glide 支持一个类似于Git的简单的插件系统。
 
-## Existing Plugins
 ## 已有的插件
 
 Glide 已经包含一些插件：
