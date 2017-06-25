@@ -1,14 +1,10 @@
-# Commands
+# 命令
 
-The following are the Glide commands, most of which are to help you manage your workspace.
+以下是 Glide 的命令，大部分是帮助管理工作区的。
 
-## glide create (aliased to init)
+## glide create (别名：glide init)
 
-Initialize a new workspace. Among other things, this creates a `glide.yaml` file
-while attempting to guess the packages and versions to put in it. For example,
-if your project is using Godep it will use the versions specified there. Glide
-is smart enough to scan your codebase and detect the imports being used whether
-they are specified with another package manager or not.
+初始化新的工作区。除此之外，它会在尝试猜测要放入的包和版本时创建一个`glide.yaml`文件。例如，如果你的项目使用 Godep，它将其使用指定的版本。Glide 足够聪明地扫描代码库并检测正在使用的导入，无论它们是否由另一个程序包管理器指定。
 
     $ glide create
     [INFO]	Generating a YAML configuration file and guessing the dependencies
@@ -28,79 +24,68 @@ they are specified with another package manager or not.
     [INFO]	--> Adding additional metadata. See https://glide.sh/docs/glide.yaml/
     [INFO]	--> Running the config-wizard command to improve the versions in your configuration
 
-The `config-wizard`, noted here, can be run here or manually run at a later time.
-This wizard helps you figure out versions and ranges you can use for your
-dependencies.
+这里提到的配置向导(`config-wizard`)可以在这里运行，也可以在以后手动运行。此向导可帮助找出可用于依赖关系的版本和范围
 
 ### glide config-wizard
 
-This runs a wizard that scans your dependencies and retrieves information on them
-to offer up suggestions that you can interactively choose. For example, it can
-discover if a dependency uses semantic versions and help you choose the version
-ranges to use.
+这将运行一个向导，扫描依赖关系并检索其上的信息，以提供可交互选择的建议。例如，它可以发现依赖关系是否使用语义版本，并帮助你选择要使用的版本范围。
 
 ## glide get [package name]
 
-You can download one or more packages to your `vendor` directory and have it added to your
-`glide.yaml` file with `glide get`.
+你可以将一个或多个软件包下载到你的`vendor/`目录，并将其添加到你的`glide.yaml`文件中。
 
     $ glide get github.com/Masterminds/cookoo
 
-When `glide get` is used it will introspect the listed package to resolve its dependencies including using Godep, GPM, Gom, and GB config files.
+当使用`glide get`时，它会检测列出的包来解决它的依赖关系，包括使用 Godep，GPM，Gom 和GB 的配置文件。
 
-The `glide get` command can have a [version or range](versions.md) passed in with the package name. For example,
+`glide get`命令可以给包名传递一个[版本或范围](versions.md)。例如，
 
     $ glide get github.com/Masterminds/cookoo#^1.2.3
 
-The version is separated from the package name by an anchor (`#`). If no version or range is specified and the dependency uses Semantic Versions Glide will prompt you to ask if you want to use them.
+包名和版本通过一个`#`来分隔。如果没有指定版本或范围，并且依赖关系使用语义版本，那么 Glide 将询问是否要使用它们。
 
-## glide update (aliased to up)
+## glide update (别名： glide up)
 
-Download or update all of the libraries listed in the `glide.yaml` file and put
-them in the `vendor` directory. It will also recursively walk through the
-dependency packages to fetch anything that's needed and read in any configuration.
+下载或更新`glide.yaml`文件中列出的所有库，并将它们放在`vendor/`目录中。它还将递归地遍历依赖包以获取所需的任何配置文件。
 
     $ glide up
 
-This will recurse over the packages looking for other projects managed by Glide,
-Godep, gb, gom, and GPM. When one is found those packages will be installed as needed.
+这将会覆盖由Glide，Godep，gb，gom和GPM管理的其他项目。当找到这些包将根据需要安装。
 
-A `glide.lock` file will be created or updated with the dependencies pinned to
-specific versions. For example, if in the `glide.yaml` file a version was
-specified as a range (e.g., `^1.2.3`) it will be set to a specific commit id in
-the `glide.lock` file. That allows for reproducible installs (see `glide install`).
+将使用固定到特定版本的依赖关系创建或更新`glide.lock`文件。例如，如果在`glide.yaml`文件中将版本指定为范围（例如，^ 1.2.3），则`glide.lock`文件中将其设置为特定的`commit id`。这允许可重复的安装（参见 `glide install`）。
 
-To remove any nested `vendor/` directories from fetched packages see the `-v` flag.
+
+从获取的包中移除任何嵌套的`vendor/`目录请看`-v`参数。
 
 ## glide install
 
-When you want to install the specific versions from the `glide.lock` file use `glide install`.
+当你想从`glide.lock`文件安装特定版本的包时使用`glide install`。
 
     $ glide install
 
-This will read the `glide.lock` file, warning you if it's not tied to the `glide.yaml` file, and install the commit id specific versions there.
+这将会读取`glide.lock`文件，如果它没有绑定到`glide.yaml`文件则会发出警告，并安装特定`commit id`的版本。
 
-When the `glide.lock` file doesn't tie to the `glide.yaml` file, such as there being a change, it will provide an warning. Running `glide up` will recreate the `glide.lock` file when updating the dependency tree.
+当`glide.lock`文件没有绑定到`glide.yaml`文件，例如有更改，它将提示警告。运行`glide up`将在更新依赖关系树时重新创建`glide.lock`文件。
 
-If no `glide.lock` file is present `glide install` will perform an `update` and generates a lock file.
+如果没有`glide.lock`文件，`glide install`将执行`update`并生成一个锁文件。
 
-To remove any nested `vendor/` directories from fetched packages see the `-v` flag.
+从获取的包中移除任何嵌套的`vendor/`目录请看`-v`参数。
 
-## glide novendor (aliased to nv)
+## glide novendor (别名： glide nv)
 
-When you run commands like `go test ./...` it will iterate over all the subdirectories including the `vendor` directory. When you are testing your application you may want to test your application files without running all the tests of your dependencies and their dependencies. This is where the `novendor` command comes in. It lists all of the directories except `vendor`.
+当您运行`go test ./..`命令时，它将遍历包括`vendor/`目录在内的所有子目录。当测试应用程序时，你可能只需要测试应用程序文件，而无需运行依赖包及其依赖包的所有测试。这时`novendor`命令派上了用场，它列出了除`vendor/`之外的所有目录。
 
     $ go test $(glide novendor)
 
-This will run `go test` over all directories of your project except the `vendor` directory.
+这将会在你项目除`vendor`外所有目录中运行运行`go test`。
 
 ## glide name
 
-When you're scripting with Glide there are occasions where you need to know the name of the package you're working on. `glide name` returns the name of the package listed in the `glide.yaml` file.
+当您使用 Glide 进行脚本编写时，您需要知道您正在处理的包的名称。 `glide name`返回`glide.yaml`文件中列出的的名称。
 
 ## glide list
 
-Glide's `list` command shows an alphabetized list of all the packages that a project imports.
+Glide的`list`命令按字母顺序显示项目导入的所有包。
 
     $ glide list
     INSTALLED packages:
@@ -115,48 +100,46 @@ Glide's `list` command shows an alphabetized list of all the packages that a pro
 
 ## glide help
 
-Print the glide help.
+打印 glide 帮助信息。
 
     $ glide help
 
 ## glide --version
 
-Print the version and exit.
+打印 glide 版本并退出。
 
     $ glide --version
     glide version 0.12.0
 
 ## glide mirror
 
-Mirrors provide the ability to replace a repo location with
-another location that's a mirror of the original. This is useful when you want
-to have a cache for your continuous integration (CI) system or if you want to
-work on a dependency in a local location.
+镜像提供了将一个仓库替换为其镜像仓库的能力。当您希望为连续集成（CI）系统设置缓存或者想要在本地依赖包上工作时，这很有用。
 
-The mirrors are stored in an `mirrors.yaml` file in your `GLIDE_HOME`.
+镜像存放在你`GLIDE_HOME`中的一个`mirrors.yaml`文件中。
 
 The three commands to manage mirrors are `list`, `set`, and `remove`.
+管理镜像有三个命令：`list`、`set` 和 `remove`。
 
-Use `set` in the form:
+使用`set`：
 
     glide mirror set [original] [replacement]
 
-or
+或者：
 
     glide mirror set [original] [replacement] --vcs [type]
 
-for example,
+例如,
 
     glide mirror set https://github.com/example/foo https://git.example.com/example/foo.git
 
-or
+或
 
     glide mirror set https://github.com/example/foo file:///path/to/local/repo --vcs git
 
-Use `remove` in the form:
+使用`remove`：
 
     glide mirror remove [original]
 
-for example,
+例如,
 
     glide mirror remove https://github.com/example/foo

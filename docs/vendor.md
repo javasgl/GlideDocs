@@ -1,4 +1,4 @@
-## Vendor 目录
+# Vendor 目录
 
 随着 Go 1.5 的发布，`vendor/`目录除了`GOPATH`和`GOROOT`之外的依赖包的解析位置。Go 1.6 之前这是一个需要设置环境变量`GO15VENDOREXPERIMENT=1`才能启用的功能，Go 1.6 中是一个默认启用的功能。
 
