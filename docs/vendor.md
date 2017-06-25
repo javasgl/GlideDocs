@@ -1,34 +1,35 @@
-# Vendor Directories
+## Vendor 目录
 
-With the release of Go 1.5 the `vendor/` directory was added to the resolution locations for a dependent package in addition to the `GOPATH` and `GOROOT`. Prior to Go 1.6 you needed to opt-in before Go would look there by setting the environment variable `GO15VENDOREXPERIMENT=1`. In Go 1.6 this is an opt-out feature.
+随着 Go 1.5 的发布，`vendor/`目录除了`GOPATH`和`GOROOT`之外的依赖包的解析位置。Go 1.6 之前这是一个需要设置环境变量`GO15VENDOREXPERIMENT=1`才能启用的功能，Go 1.6 中是一个默认启用的功能。
 
-_Note, even if you use the `vendor/` directories your codebase needs to be inside the `GOPATH`. With the `go` toolchain there is no escaping the `GOPATH`._
+_注意，即使你使用了`vendor/`，你的代码库还是需要放置在`GOPATH`之中，这对 `Go`工具链来说是无法避免的。
 
-The resolution locations for a dependent package are:
+一个依赖包的解析位置是：
 
-* The `vendor/` directory within the current package.
-* Walk up the directory tree looking for the package in a parents `vendor/` directory.
-* Look for the package in the `GOPATH`.
-* Use the package in the `GOROOT` (where the standard library package reside) if present.
+* 当前包中的`vendor/`目录。
+* 目录树中查找父级中的`vendor/`目录。
+* 查找`GOPATH`中的包。
+* 如果存在于`GOROOT`(标准库所在的位置)中，则使用`GOROOT`中的包。
 
-## Recommendations
+## 建议
 
-Having worked with the `vendor/` directories since they were first released we've come to some conclusions and recommendations. Glide tries to help you with these.
+自从它们首次发布依赖，使用`vendor/`目录过程中，我们得出了一些结论和建议。Glide 试图在以下几方面帮助你：
 
-1. Libraries (codebases without a `main` package) should not store outside packages in a `vendor/` folder in their VCS unless they have a specific reason and understand why they're doing it.
-2. In applications (codebases with a `main` package) there should only be one `vendor/` directory at the top level of the codebase.
+1. 库（不带`main`包的代码库）不应将外部包存储在其 VCS 中的`vendor/`中，除非它们具有特定的原因并且了解为什么要执行此操作。
+2. 在应用程序（带有`main`包的代码库）中，代码库顶层只应该有一个`vendor/`目录。
 
-There are some important reasons for these recommendations.
 
-* Each instance of a package, even the same package at the same version, in the directory structure will be in the resulting binaries. If everyone stores their own dependencies separately this will quickly lead to **binary bloat**.
-* Instances of a type created from a package in one location are **not compatible** with the same package, even at the exact same version, in another location. [You can see for yourself](https://github.com/mattfarina/golang-broken-vendor). That means loggers, database connections, and other shared instances won't work.
+这些建议有一些重要的原因。
 
-Because of this Glide flattens the dependency tree into a single top level `vendor/` directory. If a package happens to have some dependencies in their own `vendor/` folder the `go` tool will properly resolve that version.
+* 包的每个实例，即使是同一个版本的包，在目录结构中将会在编译进最终的二进制文件中。如果每个包分别存储自己的依赖包，这将很快导致二进制文件变大。
+* 不同位置的相同的包创建的实例**不兼容**，那么它们是相同的版本。[你可以自己查看](https://github.com/mattfarina/golang-broken-vendor)。这意味着日志记录器、数据库连接和其他共享的实例无法正常工作。
 
-## Why Use A `vendor` Directory?
+因此 Glide 将依赖关系平铺到单一的顶层`vendor/`目录中。如果一些包刚好在它自己的`vendor/`中有一些依赖包，`go` 工具会正确的解析该版本。
 
-If we already have the `GOPATH` to store packages why is there a need for a `vendor/` directory? This is a perfectly valid question.
+## 为何使用一个`vendor` 目录？
 
-What if multiple applications in the `GOPATH` use different versions of the same package? This is a valid problem that's both been encountered in Go applications and widely seen in languages that have been around for a lot longer.
+如果我们已经有了`GOPATH`来存储包，那么为什么需要一个`vendor/`目录?这完全是一个正常的问题。
 
-The `vendor/` directory allows differing codebases to have their own version available without having to be concerned with another codebase that needs a different version interfering with the version it needs. It provides a level of separation for each project.
+如果`GOPATH`中的多个应用程序使用同一个包的不同版本怎么办？这是一个在`Go`应用程序中遇到的正常问题，并且已经存在了很长时间。
+
+`vendor/`目录允许不同的代码库具有自己的版本，而不会受到另一个需要不同版本的代码库的干扰。 它为每个项目提供了一个隔离级别。
