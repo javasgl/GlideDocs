@@ -19,5 +19,4 @@ Glide 提供了以下功能：
 1. 使用脚本自动安装。`curl https://glide.sh/get | sh`
 2. 下载[发布版本](https://github.com/Masterminds/glide/releases)来安装。Glide 发布语义版本。
 3. 使用系统包管理工具来安装Glide。例如，如果你在 Mac 上使用 [Homebrew](http://brew.sh)，则可以使用 `brew install glide` 来安装。
-4. The latest development snapshot can be installed with `go get`. For example, `go get -u github.com/Masterminds/glide`. This is not a release version.
 4. 使用`go get`来安装最新的开发快照版本（这不是发布版本）。例如，`go get -u github.com/Masterminds/glide`。
