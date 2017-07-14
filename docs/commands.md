@@ -117,7 +117,6 @@ Glide的`list`命令按字母顺序显示项目导入的所有包。
 
 镜像存放在你`GLIDE_HOME`中的一个`mirrors.yaml`文件中。
 
-The three commands to manage mirrors are `list`, `set`, and `remove`.
 管理镜像有三个命令：`list`、`set` 和 `remove`。
 
 使用`set`：
