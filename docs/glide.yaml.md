@@ -37,7 +37,6 @@
 - `owners`：一个或者多个项目所有者列表。可以是个人或者组织，这对反馈安全问题给所有者很有用。
 - `ignore`：需要Glide忽略导入的依赖包列表。它们是包名称而不是包目录。
 - `excludeDirs`：本地代码库中的目录列表，用以从扫描依赖关系中排除。
-- `import`: A list of packages to import. Each package can include:
 - `import`：导入的依赖包列表。每个依赖包可以包含：
     - `package`：需要导入的包名称，这是唯一的必选项。包名称遵循`go`工具一样的模式。这意味着：
         - 映射到`VCS`远程位置的包名称，以 .git ，.bzr ，.hg 或者 .svn。例如，`example.com/foo/pkg.git/subpkg`。
