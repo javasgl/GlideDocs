@@ -25,7 +25,6 @@ $ glide install # 已知的命令，所以直接执行它
 $ glide foo     # 未知的命令，所以会寻找一个合适的插件
 ```
 
-In the example above, when glide receives the command `foo`, which it does not know, it will do the following:
 上面的例子中，当 glide 接收到不认识的命令`foo`，它将执行以下操作：
 
 1. 将`foo`变为`glide-foo`

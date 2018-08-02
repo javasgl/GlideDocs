@@ -12,7 +12,6 @@ Go 中每个目录都是一个包。这在你有一个包含了所有包的仓�
 
 这看你。这是个人或组织的决定。Glide 将帮助你根据需要安装外部依赖包，或帮你管理已进入你的版本控制系统的依赖包。
 
-By default, commands such as `glide update` and `glide install` install on-demand. To manage a vendor folder that's checked into version control use the flags:
 默认情况下，`glide update`和`glide install`等命令将按需安装。要管理进入到版本控制的`vendor/`文件夹，请使用标志：
 
 * `--update-vendored` (别名：`-u`) 更新 `vendor`依赖.
