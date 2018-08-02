@@ -40,7 +40,6 @@
 - `import`：导入的依赖包列表。每个依赖包可以包含：
     - `package`：需要导入的包名称，这是唯一的必选项。包名称遵循`go`工具一样的模式。这意味着：
         - 映射到`VCS`远程位置的包名称，以 .git ，.bzr ，.hg 或者 .svn。例如，`example.com/foo/pkg.git/subpkg`。
-        - GitHub, BitBucket, Launchpad, IBM Bluemix Services, and Go on Google Source are special cases that don't need the VCS extension.
         - GitHub，BitBucket，Launchpad，IBM Bluemix Services以及Google Source是不需要VCS扩展的特殊情况。
     - `version`：使用的语义版本、语义版本范围，`branch`，`tag`，或者 `commint id`。更多信息请看[版本文档](versions.md)。
     - `repo`：如果包名称不是一个仓库地址，或者是一个私有仓库，可以列在这里。包将从仓库检出，并存放到包名称指定的地方。这允许使用`forks`。
